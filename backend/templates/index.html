@@ -3,7 +3,9 @@
 <head>
     <title>Security Portal</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
 <h1>Security Findings Dashboard</h1>
@@ -61,7 +63,11 @@
     </tbody>
 </table>
 
-<!-- Severity trend -->
+<!-- Severity trend chart -->
+<h3 style="margin-top: 30px;">Severity Trend Chart</h3>
+<canvas id="severityChart" width="700" height="300"></canvas>
+
+<!-- Severity trend table -->
 <h3 style="margin-top: 30px;">Severity Trend (Over Time)</h3>
 <table border="1" cellpadding="6" cellspacing="0" width="70%">
     <thead>
@@ -110,6 +116,58 @@
         {% endfor %}
     </tbody>
 </table>
+
+<!-- Chart JS Logic -->
+<script>
+    const labels = [
+        {% for scan in history %}
+            "{{ scan.scan_time }}"{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    const highData = [
+        {% for scan in history %}
+            {{ scan.high }}{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    const lowData = [
+        {% for scan in history %}
+            {{ scan.low }}{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    const ctx = document.getElementById('severityChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'High',
+                    data: highData,
+                    backgroundColor: 'rgba(255, 0, 0, 0.7)'
+                },
+                {
+                    label: 'Low',
+                    data: lowData,
+                    backgroundColor: 'rgba(0, 128, 0, 0.7)'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                }
+            }
+        }
+    });
+</script>
+
 
 </body>
 </html>

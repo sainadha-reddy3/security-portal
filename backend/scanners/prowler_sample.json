@@ -1,0 +1,16 @@
+{
+  "findings": [
+    {
+      "check_id": "iam-password-policy",
+      "resource": "AWS Account",
+      "severity": "HIGH",
+      "message": "Password policy does not enforce rotation"
+    },
+    {
+      "check_id": "s3-public-access",
+      "resource": "s3-bucket-demo",
+      "severity": "LOW",
+      "message": "S3 bucket has public access blocked"
+    }
+  ]
+}
