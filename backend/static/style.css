@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f6fa;
+    padding: 20px;
+}
+
+h1 {
+    color: #2f3640;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background: white;
+    margin-bottom: 10px;
+    padding: 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.severity-LOW {
+    color: green;
+    font-weight: bold;
+}
+
+.severity-HIGH {
+    color: red;
+    font-weight: bold;
+}
+table {
+    background: white;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #2f3640;
+    color: white;
+}
+
+th, td {
+    text-align: left;
+}

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h1>Security Findings Dashboard</h1>
+
+<!-- Scan metadata -->
+<div style="margin-bottom: 10px; font-size: 14px;">
+    <strong>Scan Run ID:</strong> {{ run_id }} <br>
+    <strong>Scan Time:</strong> {{ scan_time }}
+</div>
+
+<!-- Summary counters -->
+<div style="margin-bottom: 10px;">
+    <strong>Total:</strong> {{ total }} |
+    <span class="severity-HIGH">High: {{ high }}</span> |
+    <span class="severity-LOW">Low: {{ low }}</span>
+</div>
+
+<!-- Filters -->
+<div style="margin-bottom: 10px;">
+    <a href="/">All</a> |
+    <a href="/?severity=HIGH" class="severity-HIGH">High</a> |
+    <a href="/?severity=LOW" class="severity-LOW">Low</a>
+</div>
+
+<!-- Run Scan button -->
+<form method="POST" action="/run-scan" style="margin-bottom: 20px;">
+    <button type="submit">Run Scan</button>
+</form>
+
+<!-- Export -->
+<div style="margin-bottom: 20px;">
+    <strong>Export Reports:</strong>
+    <a href="/export/latest" target="_blank">Latest Scan (JSON)</a> |
+    <a href="/export/all" target="_blank">All Scans (JSON)</a>
+</div>
+
+<!-- Scan history -->
+<h3>Scan History</h3>
+<table border="1" cellpadding="6" cellspacing="0" width="70%">
+    <thead>
+        <tr>
+            <th>Run ID</th>
+            <th>Scan Time</th>
+            <th>Total Findings</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for scan in history %}
+        <tr>
+            <td>{{ scan.run_id }}</td>
+            <td>{{ scan.scan_time }}</td>
+            <td>{{ scan.total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Severity trend -->
+<h3 style="margin-top: 30px;">Severity Trend (Over Time)</h3>
+<table border="1" cellpadding="6" cellspacing="0" width="70%">
+    <thead>
+        <tr>
+            <th>Scan Time</th>
+            <th>Total</th>
+            <th class="severity-HIGH">High</th>
+            <th class="severity-LOW">Low</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for scan in history %}
+        <tr>
+            <td>{{ scan.scan_time }}</td>
+            <td>{{ scan.total }}</td>
+            <td class="severity-HIGH">{{ scan.high }}</td>
+            <td class="severity-LOW">{{ scan.low }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Findings table -->
+<h3 style="margin-top: 30px;">Latest Scan Findings</h3>
+<table border="1" cellpadding="8" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>Tool</th>
+            <th>File</th>
+            <th>Severity</th>
+            <th>Message</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for finding in findings %}
+        <tr>
+            <td>{{ finding.tool }}</td>
+            <td>{{ finding.file }}</td>
+            <td>
+                <span class="severity-{{ finding.severity }}">
+                    {{ finding.severity }}
+                </span>
+            </td>
+            <td>{{ finding.message }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>
