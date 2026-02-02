@@ -1,6 +1,4 @@
-from flask import Flask, jsonify, render_template, request, redirect, url_for, Response
-from scanners.yamllint_scanner import run_yamllint
-from scanners.prowler_scanner import run_prowler
+from flask import Flask, jsonify, render_template, request, Response
 from db import init_db, save_scan, load_scans
 from functools import wraps
 
@@ -10,14 +8,8 @@ app = Flask(__name__)
 # Users & Roles (RBAC)
 # ==============================
 USERS = {
-    "admin": {
-        "password": "admin123",
-        "role": "admin"
-    },
-    "viewer": {
-        "password": "viewer123",
-        "role": "viewer"
-    }
+    "admin": {"password": "admin123", "role": "admin"},
+    "viewer": {"password": "viewer123", "role": "viewer"}
 }
 
 
@@ -31,9 +23,7 @@ def authenticate():
 
 def check_auth(username, password):
     user = USERS.get(username)
-    if not user:
-        return None
-    if user["password"] == password:
+    if user and user["password"] == password:
         return user
     return None
 
@@ -64,89 +54,80 @@ def requires_admin(f):
 
 
 # ==============================
-# Initialize database
+# Initialize DB
 # ==============================
 init_db()
-
-# ==============================
-# Load existing scans from DB
-# ==============================
 SCAN_HISTORY = load_scans()
 
 
-def run_and_store_scan():
-    """
-    Run yamllint + prowler, store scan in DB, update in-memory history
-    """
-
-    yaml_findings, run_id, scan_time = run_yamllint(".")
-    prowler_findings, _, _ = run_prowler()
-
-    findings = yaml_findings + prowler_findings
-
-    high = len([f for f in findings if f["severity"] == "HIGH"])
-    low = len([f for f in findings if f["severity"] == "LOW"])
-
-    scan = {
-        "run_id": run_id,
-        "scan_time": scan_time,
-        "total": len(findings),
-        "high": high,
-        "low": low,
-        "findings": findings
-    }
-
-    save_scan(scan)
-    SCAN_HISTORY.append(scan)
-
-    return scan
-
-
 # ==============================
-# Run initial scan if DB empty
-# ==============================
-if not SCAN_HISTORY:
-    run_and_store_scan()
-
-
-# ==============================
-# Routes
+# MAIN DASHBOARD ROUTE
 # ==============================
 @app.route("/", methods=["GET"])
 @requires_auth
 def index():
-    severity_filter = request.args.get("severity")
+    """
+    Aggregates ALL scans across time and repos.
+    Builds repo model + trend model for UI.
+    """
 
-    latest_scan = SCAN_HISTORY[-1]
-    findings = latest_scan["findings"]
+    # 🔥 Combine findings from all scans
+    all_findings = []
+    for scan in SCAN_HISTORY:
+        all_findings.extend(scan["findings"])
 
-    if severity_filter:
-        findings = [f for f in findings if f["severity"] == severity_filter]
+    total = len(all_findings)
+    high = len([f for f in all_findings if f["severity"] == "HIGH"])
+    low = len([f for f in all_findings if f["severity"] == "LOW"])
 
-    total = len(findings)
-    high = len([f for f in findings if f["severity"] == "HIGH"])
-    low = len([f for f in findings if f["severity"] == "LOW"])
+    # -------- Repository Summary (for UI table/cards) --------
+    repo_summary = {}
+
+    for f in all_findings:
+        repo = f.get("repo", "unknown")
+
+        if repo not in repo_summary:
+            repo_summary[repo] = {
+                "total": 0,
+                "high": 0,
+                "low": 0,
+                "status": "Passed"
+            }
+
+        repo_summary[repo]["total"] += 1
+
+        if f["severity"] == "HIGH":
+            repo_summary[repo]["high"] += 1
+            repo_summary[repo]["status"] = "Failed"
+        else:
+            repo_summary[repo]["low"] += 1
+
+    # -------- Trend data (last 10 scans) --------
+    trend_labels = []
+    trend_high = []
+    trend_low = []
+
+    for scan in SCAN_HISTORY[-10:]:
+        trend_labels.append(scan["scan_time"])
+        trend_high.append(scan["high"])
+        trend_low.append(scan["low"])
 
     return render_template(
         "index.html",
-        findings=findings,
+        findings=all_findings,
         total=total,
         high=high,
         low=low,
-        run_id=latest_scan["run_id"],
-        scan_time=latest_scan["scan_time"],
-        history=SCAN_HISTORY
+        repo_summary=repo_summary,
+        trend_labels=trend_labels,
+        trend_high=trend_high,
+        trend_low=trend_low
     )
 
 
-@app.route("/run-scan", methods=["POST"])
-@requires_auth
-@requires_admin
-def run_scan():
-    run_and_store_scan()
-    return redirect(url_for("index"))
-
-
+# ==============================
+# APIs
+# ==============================
 @app.route("/scan-history")
 @requires_auth
 def scan_history():
@@ -170,8 +151,21 @@ def export_all():
     })
 
 
+@app.route("/api/upload-scan", methods=["POST"])
+def upload_scan():
+    scan = request.get_json()
+
+    if not scan or "findings" not in scan:
+        return jsonify({"error": "Invalid scan data"}), 400
+
+    save_scan(scan)
+    SCAN_HISTORY.append(scan)
+
+    return jsonify({"status": "Scan uploaded successfully"})
+
+
 # ==============================
-# Health check (UNPROTECTED)
+# Health
 # ==============================
 @app.route("/health")
 def health():

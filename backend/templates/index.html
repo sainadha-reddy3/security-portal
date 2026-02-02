@@ -1,173 +1,174 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Security Portal</title>
+    <title>YAML Lint Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
 
-<h1>Security Findings Dashboard</h1>
-
-<!-- Scan metadata -->
-<div style="margin-bottom: 10px; font-size: 14px;">
-    <strong>Scan Run ID:</strong> {{ run_id }} <br>
-    <strong>Scan Time:</strong> {{ scan_time }}
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="side-icon">✔</div>
+    <div class="side-icon">🏠</div>
+    <div class="side-icon">📁</div>
+    <div class="side-icon">❓</div>
+    <div class="side-icon">👥</div>
+    <div class="side-icon">⚙️</div>
 </div>
 
-<!-- Summary counters -->
-<div style="margin-bottom: 10px;">
-    <strong>Total:</strong> {{ total }} |
-    <span class="severity-HIGH">High: {{ high }}</span> |
-    <span class="severity-LOW">Low: {{ low }}</span>
-</div>
+<div class="content">
 
-<!-- Filters -->
-<div style="margin-bottom: 10px;">
-    <a href="/">All</a> |
-    <a href="/?severity=HIGH" class="severity-HIGH">High</a> |
-    <a href="/?severity=LOW" class="severity-LOW">Low</a>
-</div>
+    <!-- Top Header Bar -->
+    <div class="topbar">
+        <div class="logo-title">YAML Lint Dashboard</div>
+        <div class="top-actions">
+            <input class="search" placeholder="Search..." />
+            <span class="icon">🔔</span>
+            <span class="icon">👤</span>
+        </div>
+    </div>
 
-<!-- Run Scan button -->
-<form method="POST" action="/run-scan" style="margin-bottom: 20px;">
-    <button type="submit">Run Scan</button>
-</form>
+    <!-- Metric Cards -->
+    <div class="cards">
+        <div class="card blue">
+            <div class="card-inner">
+                <div class="card-icon">📁</div>
+                <div>
+                    <h2>{{ repo_summary|length }}</h2>
+                    <p>Projects Scanned</p>
+                </div>
+            </div>
+        </div>
 
-<!-- Export -->
-<div style="margin-bottom: 20px;">
-    <strong>Export Reports:</strong>
-    <a href="/export/latest" target="_blank">Latest Scan (JSON)</a> |
-    <a href="/export/all" target="_blank">All Scans (JSON)</a>
-</div>
+        <div class="card red">
+            <div class="card-inner">
+                <div class="card-icon">🐞</div>
+                <div>
+                    <h2>{{ total }}</h2>
+                    <p>Issues Found Last 7 Days</p>
+                </div>
+            </div>
+        </div>
 
-<!-- Scan history -->
-<h3>Scan History</h3>
-<table border="1" cellpadding="6" cellspacing="0" width="70%">
+        <div class="card green">
+            <div class="card-inner">
+                <div class="card-icon">✔</div>
+                <div>
+                    <h2>{{ low }}</h2>
+                    <p>Passed without Errors</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card orange">
+            <div class="card-inner">
+                <div class="card-icon">⚠</div>
+                <div>
+                    <h2>{{ high }}</h2>
+                    <p>Failed Runs Last 7 Days</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Row -->
+    <div class="analytics">
+
+        <div class="panel">
+            <h3>Issue Breakdown</h3>
+            <canvas id="donut"></canvas>
+        </div>
+
+        <div class="panel">
+            <h3>Lint Issue Trend</h3>
+            <canvas id="trend"></canvas>
+        </div>
+
+        <div class="panel">
+            <h3>Issues by Severity</h3>
+            <ul class="severity-list">
+                <li>High <span>{{ high }}</span></li>
+                <li>Low <span>{{ low }}</span></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Bottom Section -->
+    <div class="bottom">
+
+        <div class="table-panel">
+            <h3>Recent Lint Results</h3>
+            <table>
     <thead>
         <tr>
-            <th>Run ID</th>
-            <th>Scan Time</th>
-            <th>Total Findings</th>
+            <th>Repository</th>
+            <th>Total Issues</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
-        {% for scan in history %}
+        {% for repo, data in repo_summary.items() %}
         <tr>
-            <td>{{ scan.run_id }}</td>
-            <td>{{ scan.scan_time }}</td>
-            <td>{{ scan.total }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<!-- Severity trend chart -->
-<h3 style="margin-top: 30px;">Severity Trend Chart</h3>
-<canvas id="severityChart" width="700" height="300"></canvas>
-
-<!-- Severity trend table -->
-<h3 style="margin-top: 30px;">Severity Trend (Over Time)</h3>
-<table border="1" cellpadding="6" cellspacing="0" width="70%">
-    <thead>
-        <tr>
-            <th>Scan Time</th>
-            <th>Total</th>
-            <th class="severity-HIGH">High</th>
-            <th class="severity-LOW">Low</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for scan in history %}
-        <tr>
-            <td>{{ scan.scan_time }}</td>
-            <td>{{ scan.total }}</td>
-            <td class="severity-HIGH">{{ scan.high }}</td>
-            <td class="severity-LOW">{{ scan.low }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<!-- Findings table -->
-<h3 style="margin-top: 30px;">Latest Scan Findings</h3>
-<table border="1" cellpadding="8" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>Tool</th>
-            <th>File</th>
-            <th>Severity</th>
-            <th>Message</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for finding in findings %}
-        <tr>
-            <td>{{ finding.tool }}</td>
-            <td>{{ finding.file }}</td>
+            <td>{{ repo }}</td>
+            <td>{{ data.total }}</td>
+            <td>{{ data.high }}</td>
+            <td>{{ data.low }}</td>
             <td>
-                <span class="severity-{{ finding.severity }}">
-                    {{ finding.severity }}
-                </span>
+                {% if data.status == "Failed" %}
+                    <span class="fail">Failed</span>
+                {% else %}
+                    <span class="pass">Passed</span>
+                {% endif %}
             </td>
-            <td>{{ finding.message }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<!-- Chart JS Logic -->
+        </div>
+
+        <div class="side-panel">
+            <h3>Top Projects with Issues</h3>
+            {% for repo, data in repo_summary.items() %}
+                <div class="repo-box">
+                    <b>{{ repo }}</b><br>
+                    High: {{ data.high }} | Low: {{ data.low }}
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+</div>
+
 <script>
-    const labels = [
-        {% for scan in history %}
-            "{{ scan.scan_time }}"{% if not loop.last %},{% endif %}
-        {% endfor %}
-    ];
+new Chart(document.getElementById('donut'), {
+    type: 'doughnut',
+    data: {
+        labels: ['High', 'Low'],
+        datasets: [{
+            data: [{{ high }}, {{ low }}],
+            backgroundColor: ['#e74c3c','#2ecc71']
+        }]
+    }
+});
 
-    const highData = [
-        {% for scan in history %}
-            {{ scan.high }}{% if not loop.last %},{% endif %}
-        {% endfor %}
-    ];
-
-    const lowData = [
-        {% for scan in history %}
-            {{ scan.low }}{% if not loop.last %},{% endif %}
-        {% endfor %}
-    ];
-
-    const ctx = document.getElementById('severityChart').getContext('2d');
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'High',
-                    data: highData,
-                    backgroundColor: 'rgba(255, 0, 0, 0.7)'
-                },
-                {
-                    label: 'Low',
-                    data: lowData,
-                    backgroundColor: 'rgba(0, 128, 0, 0.7)'
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { precision: 0 }
-                }
-            }
-        }
-    });
+new Chart(document.getElementById('trend'), {
+    type: 'line',
+    data: {
+        labels: ['Run'],
+        datasets: [{
+            label: 'Issues',
+            data: [{{ total }}],
+            borderColor: '#3498db'
+        }]
+    }
+});
 </script>
-
 
 </body>
 </html>
