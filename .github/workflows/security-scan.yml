@@ -11,9 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # ---------- Checkout ----------
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      # ---------- Python ----------
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -23,18 +25,28 @@ jobs:
         run: |
           pip install yamllint requests
 
-      # ---------- Install Trivy ----------
-      - name: Install Trivy
+      # ---------- Run yamllint ----------
+      - name: Run yamllint
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget
-          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.49.1_Linux-64bit.deb
-          sudo dpkg -i trivy_0.49.1_Linux-64bit.deb
+          yamllint -f parsable . > yamllint.txt || true
 
-      # ---------------- UPLOAD TO PORTAL ----------------
+      # ---------- Run Trivy (official action) ----------
+      - name: Run Trivy Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: nginx:latest
+          format: 'json'
+          output: 'trivy-report.json'
+
+      # ---------- Build scan.json from both reports ----------
+      - name: Build scan.json
+        run: |
+          python scripts/merge_scans.py
+
+      # ---------- Upload to your Security Portal (ngrok) ----------
       - name: Send to Security Portal
         run: |
-          curl -X POST http://192.168.110.52:5000/api/upload-scan \
+          curl -X POST https://YOUR-NGROK-URL/api/upload-scan \
           -H "Content-Type: application/json" \
           --data @scan.json \
-          --max-time 15 || true
+          --max-time 20 || true
