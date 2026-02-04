@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="header">
+    <h1>Repositories Security Posture</h1>
+</div>
+
+<table>
+    <tr>
+        <th>Repository</th>
+        <th>Total Issues</th>
+        <th>High</th>
+        <th>Low</th>
+        <th>Status</th>
+    </tr>
+
+    {% if repo_summary %}
+        {% for repo, data in repo_summary.items()
+            | sort(attribute='1.high', reverse=True) %}
+        <tr>
+            <td>
+                <a href="/repo/{{ repo }}" class="repo-link">
+                    {{ repo }}
+                </a>
+            </td>
+
+            <td>{{ data.total }}</td>
+            <td>{{ data.high }}</td>
+            <td>{{ data.low }}</td>
+
+            <td>
+                {% if data.status == "Failed" %}
+                    <span class="fail">Failed</span>
+                {% else %}
+                    <span class="pass">Passed</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td colspan="5" style="text-align:center;padding:20px;">
+                No repositories scanned yet.
+            </td>
+        </tr>
+    {% endif %}
+</table>
+
+{% endblock %}

@@ -1,0 +1,912 @@
+{
+  "run_id": "33e2b7cb-a9b5-497c-a52d-16b5a0f24756",
+  "scan_time": "2026-02-04 12:19:48",
+  "total": 129,
+  "high": 6,
+  "low": 123,
+  "findings": [
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "apt",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "It was found that apt-key in apt, all versions, do not correctly valid ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "bash",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "[Privilege escalation possible to other user than root]"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "bsdutils",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: util-linux: Heap buffer overread in setpwnam() when processing 256-byte usernames"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "bsdutils",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "coreutils",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "coreutils: race condition vulnerability in chown and chgrp"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "coreutils",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "coreutils: Heap Buffer Under-Read in GNU Coreutils sort via Key Specification"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "curl",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "When using `CURLOPT_PINNEDPUBLICKEY` option with libcurl or `--pinnedp ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "curl",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "curl: Curl missing SFTP host verification with wolfSSH backend"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "curl",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "curl: curl: Security bypass due to global TLS option changes in multi-threaded LDAPS transfers"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "curl",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "When an OAuth2 bearer token is used for an HTTP(S) transfer, and that  ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "curl",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "When doing TLS related transfers with reused easy or multi handles and ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "curl",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "When doing SSH-based transfers using either SCP or SFTP, and setting t ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "curl",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "When doing SSH-based transfers using either SCP or SFTP, and asked to  ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libapt-pkg7.0",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "It was found that apt-key in apt, all versions, do not correctly valid ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libblkid1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: util-linux: Heap buffer overread in setpwnam() when processing 256-byte usernames"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libblkid1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc-bin",
+      "severity": "HIGH",
+      "tool": "trivy",
+      "message": "glibc: Integer overflow in memalign leads to heap corruption"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc-bin",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: wordexp with WRDE_REUSE and WRDE_APPEND may return uninitialized memory"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc-bin",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: glibc: Information disclosure via zero-valued network query"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc-bin",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: glob implementation can cause excessive CPU and memory consumption due to crafted glob expressions"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc-bin",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in posix/regexec.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc-bin",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: stack guard protection bypass"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc-bin",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: running ldd on malicious ELF leads to code execution because of wrong size computation"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc-bin",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: ASLR bypass using cache of thread stack and heap"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc-bin",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: information disclosure of heap addresses of pthread_created thread"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc-bin",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in posix/regexec.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc6",
+      "severity": "HIGH",
+      "tool": "trivy",
+      "message": "glibc: Integer overflow in memalign leads to heap corruption"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: wordexp with WRDE_REUSE and WRDE_APPEND may return uninitialized memory"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: glibc: Information disclosure via zero-valued network query"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: glob implementation can cause excessive CPU and memory consumption due to crafted glob expressions"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in posix/regexec.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: stack guard protection bypass"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: running ldd on malicious ELF leads to code execution because of wrong size computation"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: ASLR bypass using cache of thread stack and heap"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: information disclosure of heap addresses of pthread_created thread"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libc6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "glibc: uncontrolled recursion in function check_dst_limits_calc_pos_1 in posix/regexec.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libcurl4t64",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "When using `CURLOPT_PINNEDPUBLICKEY` option with libcurl or `--pinnedp ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libcurl4t64",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "curl: Curl missing SFTP host verification with wolfSSH backend"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libcurl4t64",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "curl: curl: Security bypass due to global TLS option changes in multi-threaded LDAPS transfers"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libcurl4t64",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "When an OAuth2 bearer token is used for an HTTP(S) transfer, and that  ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libcurl4t64",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "When doing TLS related transfers with reused easy or multi handles and ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libcurl4t64",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "When doing SSH-based transfers using either SCP or SFTP, and setting t ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libcurl4t64",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "When doing SSH-based transfers using either SCP or SFTP, and asked to  ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libde265-0",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "Heap Buffer Overflow vulnerability in Libde265 v1.0.15 allows attacker ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libde265-0",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "Heap Buffer Overflow vulnerability in Libde265 v1.0.15 allows attacker ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libexpat1",
+      "severity": "HIGH",
+      "tool": "trivy",
+      "message": "libexpat: libexpat null pointer dereference"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libexpat1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "expat: libexpat in Expat allows attackers to trigger large dynamic memory allocations via a small document that is submitted for parsing"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libexpat1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libexpat: libexpat: Denial of service via crafted file processing"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libexpat1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libexpat: libexpat: Information disclosure and data integrity issues due to integer overflow in buffer reallocation"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libgcrypt20",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libgcrypt: ElGamal implementation doesn't have semantic security due to incorrectly encoded plaintexts possibly allowing to obtain sensitive information"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libgcrypt20",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libgcrypt: vulnerable to Marvin Attack"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libgnutls30t64",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "HTTPS: block-wise chosen-plaintext attack against SSL/TLS (BEAST)"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libgssapi-krb5-2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "krb5: integer overflow in dbentry->n_key_data in kadmin/dbutil/dump.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libgssapi-krb5-2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "krb5: Memory leak at /krb5/src/lib/rpc/pmap_rmt.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libgssapi-krb5-2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "krb5: Memory leak at /krb5/src/lib/gssapi/krb5/k5sealv3.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libheif-plugin-dav1d",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libheif is an HEIF and AVIF file format decoder and encoder. Prior to  ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libheif-plugin-libde265",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libheif is an HEIF and AVIF file format decoder and encoder. Prior to  ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libheif1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libheif is an HEIF and AVIF file format decoder and encoder. Prior to  ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libjbig0",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libtiff: memory malloc failure in tif_jbig.c could cause DOS."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libk5crypto3",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "krb5: integer overflow in dbentry->n_key_data in kadmin/dbutil/dump.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libk5crypto3",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "krb5: Memory leak at /krb5/src/lib/rpc/pmap_rmt.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libk5crypto3",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "krb5: Memory leak at /krb5/src/lib/gssapi/krb5/k5sealv3.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libkrb5-3",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "krb5: integer overflow in dbentry->n_key_data in kadmin/dbutil/dump.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libkrb5-3",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "krb5: Memory leak at /krb5/src/lib/rpc/pmap_rmt.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libkrb5-3",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "krb5: Memory leak at /krb5/src/lib/gssapi/krb5/k5sealv3.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libkrb5support0",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "krb5: integer overflow in dbentry->n_key_data in kadmin/dbutil/dump.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libkrb5support0",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "krb5: Memory leak at /krb5/src/lib/rpc/pmap_rmt.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libkrb5support0",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "krb5: Memory leak at /krb5/src/lib/gssapi/krb5/k5sealv3.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "liblastlog2-2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: util-linux: Heap buffer overread in setpwnam() when processing 256-byte usernames"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "liblastlog2-2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libldap2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "openldap: incorrect multi-keyword mode cipherstring parsing"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libldap2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "openldap: Privilege escalation via PID file manipulation"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libldap2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "openldap: contrib/slapd-modules/nops/nops.c attempts to free stack buffer allowing remote attackers to cause a denial of service"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libldap2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "openldap: Certificate validation incorrectly matches name against CN-ID"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libldap2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "OpenLDAP: OpenLDAP LMDB: Denial of Service and Information Disclosure via Heap Buffer Underflow"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libmount1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: util-linux: Heap buffer overread in setpwnam() when processing 256-byte usernames"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libmount1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libpng16-16t64",
+      "severity": "HIGH",
+      "tool": "trivy",
+      "message": "libpng: libpng: Denial of service and information disclosure via heap buffer over-read in png_image_finish_read"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libpng16-16t64",
+      "severity": "HIGH",
+      "tool": "trivy",
+      "message": "libpng: libpng: Information disclosure and denial of service via integer truncation in simplified write API"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libpng16-16t64",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libpng: hardcoded value leads to heap-overflow"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libsmartcols1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: util-linux: Heap buffer overread in setpwnam() when processing 256-byte usernames"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libsmartcols1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libsqlite3-0",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "An integer overflow exists in the  FTS5 https://sqlite.org/fts5.html e ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libsqlite3-0",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "sqlite: crafted SQL query allows a malicious user to obtain sensitive information"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libsystemd0",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "systemd: TOCTOU race condition when updating file permissions and SELinux security contexts"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libsystemd0",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "An issue was discovered in systemd 253. An attacker can modify a seale ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libsystemd0",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "An issue was discovered in systemd 253. An attacker can truncate a sea ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libsystemd0",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "An issue was discovered in systemd 253. An attacker can modify the con ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libtasn1-6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libtasn1: libtasn1: Denial of Service via stack-based buffer overflow in asn1_expend_octet_string"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libtiff6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libtiff: Memory leaks in tif_open.c, tif_lzw.c, and tif_aux.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libtiff6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libtiff: NULL pointer dereference in the jpeg_fdct_16x16 function in jfdctint.c"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libtiff6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "tiff: Malicious file leads to a denial of service in TIFF File Handler"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libtiff6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libtiff: LibTIFF Use-After-Free Vulnerability"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libtiff6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libtiff: LibTIFF Buffer Overflow"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libtiff6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libtiff: Libtiff Null Pointer Dereference Vulnerability"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libtinfo6",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "gnu-ncurses: ncurses Stack Buffer Overflow"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libudev1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "systemd: TOCTOU race condition when updating file permissions and SELinux security contexts"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libudev1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "An issue was discovered in systemd 253. An attacker can modify a seale ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libudev1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "An issue was discovered in systemd 253. An attacker can truncate a sea ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libudev1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "An issue was discovered in systemd 253. An attacker can modify the con ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libuuid1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: util-linux: Heap buffer overread in setpwnam() when processing 256-byte usernames"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libuuid1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libxml2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libxml2: libxml2: Denial of Service via uncontrolled recursion in XML catalog processing"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libxml2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libxml2: libxml2: Uncontrolled Recursion Vulnerability"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libxml2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libxml2: Unbounded RelaxNG Include Recursion Leading to Stack Overflow"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libxml2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libxml2: libxml2: Denial of Service via crafted XML catalogs"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libxml2",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libxml2: Memory Leak Leading to Local Denial of Service in xmllint Interactive Shell"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libxslt1.1",
+      "severity": "HIGH",
+      "tool": "trivy",
+      "message": "libxslt: Heap Use-After-Free in libxslt caused by atype corruption in xmlAttrPtr"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libxslt1.1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libxslt: use-after-free with key data stored cross-RVT"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libxslt1.1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libxslt: math.random() in xslt uses unseeded randomness"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "libxslt1.1",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "libxslt: Type Confusion in exsltFuncResultCompfunction of libxslt"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "login",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: util-linux: Heap buffer overread in setpwnam() when processing 256-byte usernames"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "login",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "login.defs",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "initscripts in rPath Linux 1 sets insecure permissions for the /var/lo ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "login.defs",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "shadow-utils: Default subordinate ID configuration in /etc/login.defs could lead to compromise"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "login.defs",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "[more related to CVE-2005-4890]"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "mount",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: util-linux: Heap buffer overread in setpwnam() when processing 256-byte usernames"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "mount",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "ncurses-base",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "gnu-ncurses: ncurses Stack Buffer Overflow"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "ncurses-bin",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "gnu-ncurses: ncurses Stack Buffer Overflow"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "passwd",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "initscripts in rPath Linux 1 sets insecure permissions for the /var/lo ..."
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "passwd",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "shadow-utils: Default subordinate ID configuration in /etc/login.defs could lead to compromise"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "passwd",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "[more related to CVE-2005-4890]"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "perl-base",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "perl: File:: Temp insecure temporary file handling"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "sysvinit-utils",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "[sysvinit: no-root option in expert installer exposes locally exploitable security flaw]"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "tar",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "tar: does not properly warn the user when extracting setuid or setgid files"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "tar",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "[tar's rmt command may have undesired side effects]"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "util-linux",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: util-linux: Heap buffer overread in setpwnam() when processing 256-byte usernames"
+    },
+    {
+      "repo": "nginx:latest (debian 13.3)",
+      "file": "util-linux",
+      "severity": "LOW",
+      "tool": "trivy",
+      "message": "util-linux: partial disclosure of arbitrary files in chfn and chsh when compiled with libreadline"
+    }
+  ]
+}

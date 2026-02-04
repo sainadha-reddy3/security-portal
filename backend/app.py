@@ -44,46 +44,19 @@ def requires_auth(f):
     return decorated
 
 
-def requires_admin(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        if request.user["role"] != "admin":
-            return Response("Admin access required", 403)
-        return f(*args, **kwargs)
-    return decorated
-
-
 # ==============================
 # Initialize DB
 # ==============================
 init_db()
-SCAN_HISTORY = load_scans()
 
 
 # ==============================
-# MAIN DASHBOARD ROUTE
+# Helpers
 # ==============================
-@app.route("/", methods=["GET"])
-@requires_auth
-def index():
-    """
-    Aggregates ALL scans across time and repos.
-    Builds repo model + trend model for UI.
-    """
-
-    # 🔥 Combine findings from all scans
-    all_findings = []
-    for scan in SCAN_HISTORY:
-        all_findings.extend(scan["findings"])
-
-    total = len(all_findings)
-    high = len([f for f in all_findings if f["severity"] == "HIGH"])
-    low = len([f for f in all_findings if f["severity"] == "LOW"])
-
-    # -------- Repository Summary (for UI table/cards) --------
+def build_repo_summary(findings):
     repo_summary = {}
 
-    for f in all_findings:
+    for f in findings:
         repo = f.get("repo", "unknown")
 
         if repo not in repo_summary:
@@ -102,19 +75,50 @@ def index():
         else:
             repo_summary[repo]["low"] += 1
 
-    # -------- Trend data (last 10 scans) --------
+    return repo_summary
+
+
+def get_all_findings():
+    """
+    ALWAYS read latest scans from DB.
+    This prevents UI from needing restart.
+    """
+    scans = load_scans()
+    all_findings = []
+
+    for scan in scans:
+        all_findings.extend(scan["findings"])
+
+    return all_findings, scans
+
+
+# ==============================
+# Dashboard
+# ==============================
+@app.route("/", methods=["GET"])
+@requires_auth
+def index():
+
+    all_findings, scans = get_all_findings()
+
+    total = len(all_findings)
+    high = len([f for f in all_findings if f["severity"] == "HIGH"])
+    low = len([f for f in all_findings if f["severity"] == "LOW"])
+
+    repo_summary = build_repo_summary(all_findings)
+
+    # Trend (last 10 scans)
     trend_labels = []
     trend_high = []
     trend_low = []
 
-    for scan in SCAN_HISTORY[-10:]:
+    for scan in scans[-10:]:
         trend_labels.append(scan["scan_time"])
         trend_high.append(scan["high"])
         trend_low.append(scan["low"])
 
     return render_template(
         "index.html",
-        findings=all_findings,
         total=total,
         high=high,
         low=low,
@@ -126,31 +130,86 @@ def index():
 
 
 # ==============================
-# APIs
+# Repositories Page
 # ==============================
-@app.route("/scan-history")
+@app.route("/repos")
 @requires_auth
-def scan_history():
-    return jsonify(SCAN_HISTORY)
+def repos_page():
+    all_findings, _ = get_all_findings()
+    repo_summary = build_repo_summary(all_findings)
+    return render_template("repos.html", repo_summary=repo_summary)
 
 
-@app.route("/export/latest")
+# ==============================
+# Repo Drill-down Page
+# ==============================
+@app.route("/repo/<repo_name>")
 @requires_auth
-@requires_admin
-def export_latest():
-    return jsonify(SCAN_HISTORY[-1])
+def repo_details(repo_name):
+
+    all_findings = []
+    for scan in SCAN_HISTORY:
+        all_findings.extend(scan["findings"])
+
+    repo_findings = [f for f in all_findings if f.get("repo") == repo_name]
+
+    high = len([f for f in repo_findings if f["severity"] == "HIGH"])
+    low = len([f for f in repo_findings if f["severity"] == "LOW"])
+
+    return render_template(
+        "repo_details.html",
+        repo_name=repo_name,
+        findings=repo_findings,
+        high=high,
+        low=low,
+        total=len(repo_findings)
+    )
 
 
-@app.route("/export/all")
+
+
+# ==============================
+# Findings Page (with filters)
+# ==============================
+@app.route("/findings")
 @requires_auth
-@requires_admin
-def export_all():
-    return jsonify({
-        "total_scans": len(SCAN_HISTORY),
-        "scans": SCAN_HISTORY
-    })
+def findings_page():
+
+    severity = request.args.get("severity")
+    tool = request.args.get("tool")
+    search = request.args.get("search")
+
+    all_findings, _ = get_all_findings()
+
+    if severity:
+        all_findings = [f for f in all_findings if f.get("severity") == severity]
+
+    if tool:
+        all_findings = [f for f in all_findings if f.get("tool") == tool]
+
+    if search:
+        all_findings = [
+            f for f in all_findings
+            if search.lower() in f.get("file", "").lower()
+            or search.lower() in f.get("message", "").lower()
+        ]
+
+    return render_template("findings.html", findings=all_findings)
 
 
+# ==============================
+# History Page
+# ==============================
+@app.route("/history")
+@requires_auth
+def history_page():
+    _, scans = get_all_findings()
+    return render_template("history.html", scans=scans)
+
+
+# ==============================
+# API Upload (CI/CD)
+# ==============================
 @app.route("/api/upload-scan", methods=["POST"])
 def upload_scan():
     scan = request.get_json()
@@ -159,8 +218,6 @@ def upload_scan():
         return jsonify({"error": "Invalid scan data"}), 400
 
     save_scan(scan)
-    SCAN_HISTORY.append(scan)
-
     return jsonify({"status": "Scan uploaded successfully"})
 
 

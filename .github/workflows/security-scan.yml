@@ -12,35 +12,29 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # ---------------- YAMLLINT ----------------
-      - name: Install yamllint
-        run: pip install yamllint
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-      - name: Run yamllint
-        run: yamllint -f parsable . > report.txt || true
+      - name: Install dependencies
+        run: |
+          pip install yamllint requests
 
-      # ---------------- TRIVY ----------------
+      # ---------- Install Trivy ----------
       - name: Install Trivy
         run: |
-          sudo apt-get install wget apt-transport-https gnupg lsb-release -y
-          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-          echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/trivy.list
           sudo apt-get update
-          sudo apt-get install trivy -y
+          sudo apt-get install -y wget
+          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.49.1_Linux-64bit.deb
+          sudo dpkg -i trivy_0.49.1_Linux-64bit.deb
 
-      - name: Run Trivy
-        run: trivy image --format json -o trivy-report.json nginx:latest || true
-
-      # ---------------- MERGE ----------------
-      - name: Merge reports
-        run: python scripts/merge_scans.py
-
-      # ---------------- UPLOAD ----------------
+      # ---------------- UPLOAD TO PORTAL ----------------
       - name: Send to Security Portal
         run: |
-          curl -X POST http://YOUR_PUBLIC_IP:5000/api/upload-scan \
+          curl -X POST http://192.168.110.52:5000/api/upload-scan \
           -H "Content-Type: application/json" \
           --data @scan.json \
-          --max-time 10 || true
+          --max-time 15 || true

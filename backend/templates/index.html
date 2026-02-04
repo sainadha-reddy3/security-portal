@@ -1,150 +1,124 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>YAML Lint Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
+{% extends "layout.html" %}
+{% block content %}
 
-<!-- Sidebar -->
-<div class="sidebar">
-    <div class="side-icon">✔</div>
-    <div class="side-icon">🏠</div>
-    <div class="side-icon">📁</div>
-    <div class="side-icon">❓</div>
-    <div class="side-icon">👥</div>
-    <div class="side-icon">⚙️</div>
-</div>
+<!-- ===== TOP CARDS ===== -->
+<div class="cards">
 
-<div class="content">
-
-    <!-- Top Header Bar -->
-    <div class="topbar">
-        <div class="logo-title">YAML Lint Dashboard</div>
-        <div class="top-actions">
-            <input class="search" placeholder="Search..." />
-            <span class="icon">🔔</span>
-            <span class="icon">👤</span>
-        </div>
-    </div>
-
-    <!-- Metric Cards -->
-    <div class="cards">
+    <a href="/repos" class="card-link">
         <div class="card blue">
-            <div class="card-inner">
-                <div class="card-icon">📁</div>
-                <div>
-                    <h2>{{ repo_summary|length }}</h2>
-                    <p>Projects Scanned</p>
-                </div>
+            <div class="icon">📁</div>
+            <div>
+                <h2>{{ repo_summary|length }}</h2>
+                <p>Projects Scanned</p>
             </div>
         </div>
+    </a>
 
+    <a href="/findings" class="card-link">
         <div class="card red">
-            <div class="card-inner">
-                <div class="card-icon">🐞</div>
-                <div>
-                    <h2>{{ total }}</h2>
-                    <p>Issues Found Last 7 Days</p>
-                </div>
+            <div class="icon">🐞</div>
+            <div>
+                <h2>{{ high + low }}</h2>
+                <p>Issues Found</p>
             </div>
         </div>
+    </a>
 
+    <a href="/findings?severity=LOW" class="card-link">
         <div class="card green">
-            <div class="card-inner">
-                <div class="card-icon">✔</div>
-                <div>
-                    <h2>{{ low }}</h2>
-                    <p>Passed without Errors</p>
-                </div>
+            <div class="icon">✔</div>
+            <div>
+                <h2>{{ low }}</h2>
+                <p>Passed without Errors</p>
             </div>
         </div>
+    </a>
 
+    <a href="/history" class="card-link">
         <div class="card orange">
-            <div class="card-inner">
-                <div class="card-icon">⚠</div>
-                <div>
-                    <h2>{{ high }}</h2>
-                    <p>Failed Runs Last 7 Days</p>
-                </div>
+            <div class="icon">⚠</div>
+            <div>
+                <h2>{{ trend_labels|length }}</h2>
+                <p>Scan Runs</p>
             </div>
         </div>
+    </a>
+
+</div>
+
+
+<!-- ===== 3 PANELS ===== -->
+<div class="charts">
+
+    <div class="panel">
+        <h3>Issue Breakdown</h3>
+        <canvas id="donut"></canvas>
     </div>
 
-    <!-- Analytics Row -->
-    <div class="analytics">
-
-        <div class="panel">
-            <h3>Issue Breakdown</h3>
-            <canvas id="donut"></canvas>
-        </div>
-
-        <div class="panel">
-            <h3>Lint Issue Trend</h3>
-            <canvas id="trend"></canvas>
-        </div>
-
-        <div class="panel">
-            <h3>Issues by Severity</h3>
-            <ul class="severity-list">
-                <li>High <span>{{ high }}</span></li>
-                <li>Low <span>{{ low }}</span></li>
-            </ul>
-        </div>
-
+    <div class="panel">
+        <h3>Lint Issue Trend</h3>
+        <canvas id="trend"></canvas>
     </div>
 
-    <!-- Bottom Section -->
-    <div class="bottom">
-
-        <div class="table-panel">
-            <h3>Recent Lint Results</h3>
-            <table>
-    <thead>
-        <tr>
-            <th>Repository</th>
-            <th>Total Issues</th>
-            <th>High</th>
-            <th>Low</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for repo, data in repo_summary.items() %}
-        <tr>
-            <td>{{ repo }}</td>
-            <td>{{ data.total }}</td>
-            <td>{{ data.high }}</td>
-            <td>{{ data.low }}</td>
-            <td>
-                {% if data.status == "Failed" %}
-                    <span class="fail">Failed</span>
-                {% else %}
-                    <span class="pass">Passed</span>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-        </div>
-
-        <div class="side-panel">
-            <h3>Top Projects with Issues</h3>
-            {% for repo, data in repo_summary.items() %}
-                <div class="repo-box">
-                    <b>{{ repo }}</b><br>
-                    High: {{ data.high }} | Low: {{ data.low }}
-                </div>
-            {% endfor %}
-        </div>
-
+    <div class="panel">
+        <h3>Issues by Severity</h3>
+        <p><b>High:</b> {{ high }}</p>
+        <p><b>Low:</b> {{ low }}</p>
     </div>
 
 </div>
 
+
+<!-- ===== LOWER HALF ===== -->
+<div class="bottom">
+
+    <!-- Recent Results (FULL WIDTH STYLE) -->
+    <div class="panel" style="flex:3;">
+        <h3>Recent Lint Results</h3>
+        <table>
+            <tr>
+                <th>Repository</th>
+                <th>Issues</th>
+                <th>Status</th>
+            </tr>
+
+            {% for repo, data in repo_summary.items() %}
+            <tr>
+                <td>
+                    <a href="/repo/{{ repo }}" class="repo-link">{{ repo }}</a>
+                </td>
+                <td>{{ data.total }} Issues</td>
+                <td>
+                    {% if data.status == "Failed" %}
+                        <span class="fail">Failed</span>
+                    {% else %}
+                        <span class="pass">Passed</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Top Projects -->
+    <div class="panel" style="flex:1.2;">
+        <h3>Top Projects with Issues</h3>
+
+        {% for repo, data in repo_summary.items()|sort(attribute='1.high', reverse=True) %}
+            {% if data.high > 0 %}
+            <div class="repo-box">
+                <b>{{ repo }}</b><br>
+                High: {{ data.high }} | Low: {{ data.low }}
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+</div>
+
+
+<!-- ===== CHARTS ===== -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 new Chart(document.getElementById('donut'), {
     type: 'doughnut',
@@ -154,21 +128,31 @@ new Chart(document.getElementById('donut'), {
             data: [{{ high }}, {{ low }}],
             backgroundColor: ['#e74c3c','#2ecc71']
         }]
-    }
+    },
+    options: { plugins: { legend: { position: 'bottom' } } }
 });
 
 new Chart(document.getElementById('trend'), {
     type: 'line',
     data: {
-        labels: ['Run'],
-        datasets: [{
-            label: 'Issues',
-            data: [{{ total }}],
-            borderColor: '#3498db'
-        }]
-    }
+        labels: {{ trend_labels|tojson }},
+        datasets: [
+            {
+                label: 'High',
+                data: {{ trend_high|tojson }},
+                borderColor: '#e74c3c',
+                tension: 0.4
+            },
+            {
+                label: 'Low',
+                data: {{ trend_low|tojson }},
+                borderColor: '#2ecc71',
+                tension: 0.4
+            }
+        ]
+    },
+    options: { plugins: { legend: { position: 'bottom' } } }
 });
 </script>
 
-</body>
-</html>
+{% endblock %}

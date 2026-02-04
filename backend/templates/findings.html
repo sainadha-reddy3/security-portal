@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>All Findings</h1>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+    <form method="get" action="/findings">
+
+        <select name="severity">
+            <option value="">All Severity</option>
+            <option value="HIGH" {% if request.args.get('severity') == 'HIGH' %}selected{% endif %}>HIGH</option>
+            <option value="LOW" {% if request.args.get('severity') == 'LOW' %}selected{% endif %}>LOW</option>
+        </select>
+
+        <select name="tool">
+            <option value="">All Tools</option>
+            <option value="yamllint" {% if request.args.get('tool') == 'yamllint' %}selected{% endif %}>yamllint</option>
+            <option value="trivy" {% if request.args.get('tool') == 'trivy' %}selected{% endif %}>trivy</option>
+        </select>
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search file or message"
+            value="{{ request.args.get('search','') }}"
+        />
+
+        <button type="submit">Apply</button>
+    </form>
+</div>
+
+<table>
+    <tr>
+        <th>Repository</th>
+        <th>File</th>
+        <th>Severity</th>
+        <th>Tool</th>
+        <th>Message</th>
+    </tr>
+
+    {% if findings %}
+        {% for f in findings|sort(attribute='severity', reverse=True) %}
+        <tr>
+            <td>
+                <a href="/repo/{{ f.repo }}" class="repo-link">
+                    {{ f.repo }}
+                </a>
+            </td>
+            <td>{{ f.file }}</td>
+
+            <td>
+                {% if f.severity == "HIGH" %}
+                    <span class="fail">HIGH</span>
+                {% else %}
+                    <span class="pass">LOW</span>
+                {% endif %}
+            </td>
+
+            <td>{{ f.tool }}</td>
+            <td>{{ f.message }}</td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td colspan="5" style="text-align:center;padding:20px;">
+                No findings match the selected filters.
+            </td>
+        </tr>
+    {% endif %}
+</table>
+
+{% endblock %}

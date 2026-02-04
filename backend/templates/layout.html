@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="logo">🛡️</div>
+    <a href="/" title="Dashboard">🏠</a>
+    <a href="/repos" title="Repositories">📁</a>
+    <a href="/findings" title="Findings">🐞</a>
+    <a href="/history" title="Scan History">📊</a>
+</div>
+
+<!-- MAIN AREA -->
+<div class="main">
+
+    <!-- TOP HEADER -->
+    <div class="topbar">
+        <div class="title">YAML Lint Dashboard</div>
+
+        <div class="actions">
+            <input placeholder="Search..." />
+            <span class="icon">🔔</span>
+            <span class="icon">👤</span>
+        </div>
+    </div>
+
+    {% block content %}{% endblock %}
+
+</div>
+
+</body>
+</html>

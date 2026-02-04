@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="header">
+    <h1>Repository: {{ repo_name }}</h1>
+</div>
+
+<!-- Summary Cards -->
+<div class="cards">
+    <div class="card blue">
+        <div class="icon">📄</div>
+        <div>
+            <h2>{{ total }}</h2>
+            <p>Total Issues</p>
+        </div>
+    </div>
+
+    <div class="card red">
+        <div class="icon">🐞</div>
+        <div>
+            <h2>{{ high }}</h2>
+            <p>High Severity</p>
+        </div>
+    </div>
+
+    <div class="card green">
+        <div class="icon">✔</div>
+        <div>
+            <h2>{{ low }}</h2>
+            <p>Low Severity</p>
+        </div>
+    </div>
+</div>
+
+<!-- Findings Table -->
+<div class="panel">
+    <h3>Findings for {{ repo_name }}</h3>
+
+    <table>
+        <tr>
+            <th>File</th>
+            <th>Severity</th>
+            <th>Tool</th>
+            <th>Message</th>
+        </tr>
+
+        {% for f in findings %}
+        <tr>
+            <td>{{ f.file }}</td>
+            <td>
+                {% if f.severity == "HIGH" %}
+                    <span class="fail">HIGH</span>
+                {% else %}
+                    <span class="pass">LOW</span>
+                {% endif %}
+            </td>
+            <td>{{ f.tool }}</td>
+            <td>{{ f.message }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
