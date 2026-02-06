@@ -5,8 +5,9 @@
     <h1>Repository: {{ repo_name }}</h1>
 </div>
 
-<!-- Summary Cards -->
+<!-- ===== Summary Cards ===== -->
 <div class="cards">
+
     <div class="card blue">
         <div class="icon">📄</div>
         <div>
@@ -15,24 +16,52 @@
         </div>
     </div>
 
-    <div class="card red">
-        <div class="icon">🐞</div>
-        <div>
-            <h2>{{ high }}</h2>
-            <p>High Severity</p>
+    <!-- Click HIGH -->
+    <a href="/repo/{{ repo_name }}?severity=HIGH" class="card-link">
+        <div class="card red">
+            <div class="icon">🐞</div>
+            <div>
+                <h2>{{ high }}</h2>
+                <p>High Severity</p>
+            </div>
         </div>
-    </div>
+    </a>
 
-    <div class="card green">
-        <div class="icon">✔</div>
-        <div>
-            <h2>{{ low }}</h2>
-            <p>Low Severity</p>
+    <!-- Click LOW -->
+    <a href="/repo/{{ repo_name }}?severity=LOW" class="card-link">
+        <div class="card green">
+            <div class="icon">✔</div>
+            <div>
+                <h2>{{ low }}</h2>
+                <p>Low Severity</p>
+            </div>
         </div>
-    </div>
+    </a>
+
 </div>
 
-<!-- Findings Table -->
+<!-- ===== FILTER BAR ===== -->
+<div class="filter-bar">
+    <form method="get">
+        <select name="severity">
+            <option value="">All Severity</option>
+            <option value="HIGH">HIGH</option>
+            <option value="LOW">LOW</option>
+        </select>
+
+        <select name="tool">
+            <option value="">All Tools</option>
+            <option value="yamllint">yamllint</option>
+            <option value="trivy">trivy</option>
+        </select>
+
+        <input type="text" name="search" placeholder="Search file or message">
+
+        <button type="submit">Apply</button>
+    </form>
+</div>
+
+<!-- ===== Findings Table Panel ===== -->
 <div class="panel">
     <h3>Findings for {{ repo_name }}</h3>
 

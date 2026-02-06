@@ -79,10 +79,6 @@ def build_repo_summary(findings):
 
 
 def get_all_findings():
-    """
-    ALWAYS read latest scans from DB.
-    This prevents UI from needing restart.
-    """
     scans = load_scans()
     all_findings = []
 
@@ -98,16 +94,13 @@ def get_all_findings():
 @app.route("/", methods=["GET"])
 @requires_auth
 def index():
-
     all_findings, scans = get_all_findings()
 
-    total = len(all_findings)
     high = len([f for f in all_findings if f["severity"] == "HIGH"])
     low = len([f for f in all_findings if f["severity"] == "LOW"])
 
     repo_summary = build_repo_summary(all_findings)
 
-    # Trend (last 10 scans)
     trend_labels = []
     trend_high = []
     trend_low = []
@@ -119,7 +112,6 @@ def index():
 
     return render_template(
         "index.html",
-        total=total,
         high=high,
         low=low,
         repo_summary=repo_summary,
@@ -141,17 +133,31 @@ def repos_page():
 
 
 # ==============================
-# Repo Drill-down Page
+# Repo Drill-down Page (WITH FILTERS)
 # ==============================
 @app.route("/repo/<repo_name>")
 @requires_auth
 def repo_details(repo_name):
+    severity = request.args.get("severity")
+    tool = request.args.get("tool")
+    search = request.args.get("search")
 
-    all_findings = []
-    for scan in SCAN_HISTORY:
-        all_findings.extend(scan["findings"])
-
+    all_findings, _ = get_all_findings()
     repo_findings = [f for f in all_findings if f.get("repo") == repo_name]
+
+    # Apply filters
+    if severity:
+        repo_findings = [f for f in repo_findings if f.get("severity") == severity]
+
+    if tool:
+        repo_findings = [f for f in repo_findings if f.get("tool") == tool]
+
+    if search:
+        repo_findings = [
+            f for f in repo_findings
+            if search.lower() in f.get("file", "").lower()
+            or search.lower() in f.get("message", "").lower()
+        ]
 
     high = len([f for f in repo_findings if f["severity"] == "HIGH"])
     low = len([f for f in repo_findings if f["severity"] == "LOW"])
@@ -166,15 +172,12 @@ def repo_details(repo_name):
     )
 
 
-
-
 # ==============================
-# Findings Page (with filters)
+# Findings Page
 # ==============================
 @app.route("/findings")
 @requires_auth
 def findings_page():
-
     severity = request.args.get("severity")
     tool = request.args.get("tool")
     search = request.args.get("search")
@@ -198,17 +201,43 @@ def findings_page():
 
 
 # ==============================
-# History Page
+# History
 # ==============================
 @app.route("/history")
 @requires_auth
 def history_page():
     _, scans = get_all_findings()
-    return render_template("history.html", scans=scans)
+    return render_template("history.html", scans=scans[::-1])
+
+
+@app.route("/history/<run_id>")
+@requires_auth
+def history_run_details(run_id):
+    severity = request.args.get("severity")
+
+    _, scans = get_all_findings()
+
+    for scan in scans:
+        if scan["run_id"] == run_id:
+
+            findings = scan["findings"]
+
+            if severity:
+                findings = [f for f in findings if f["severity"] == severity]
+
+            return render_template(
+                "history_details.html",
+                scan=scan,
+                findings=findings,
+                severity=severity
+            )
+
+    return "Run not found", 404
+
 
 
 # ==============================
-# API Upload (CI/CD)
+# API Upload
 # ==============================
 @app.route("/api/upload-scan", methods=["POST"])
 def upload_scan():

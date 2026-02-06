@@ -1,24 +1,28 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h1>Scan History</h1>
+<h2>Scan History</h2>
 
 <table>
 <tr>
     <th>Run ID</th>
     <th>Time</th>
-    <th>Total</th>
     <th>High</th>
     <th>Low</th>
+    <th>Action</th>
 </tr>
 
 {% for scan in scans %}
 <tr>
     <td>{{ scan.run_id }}</td>
     <td>{{ scan.scan_time }}</td>
-    <td>{{ scan.total }}</td>
-    <td>{{ scan.high }}</td>
-    <td>{{ scan.low }}</td>
+    <td><span class="fail">{{ scan.high }}</span></td>
+    <td><span class="pass">{{ scan.low }}</span></td>
+    <td>
+        <a href="/history/{{ scan.run_id }}" class="repo-link">
+            View Findings
+        </a>
+    </td>
 </tr>
 {% endfor %}
 

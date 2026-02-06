@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="header">
+    <h1>Scan Run: {{ scan.run_id }}</h1>
+</div>
+
+<!-- ===== Summary Cards ===== -->
+{% for f in findings %}
+<tr>
+    <td>{{ f.repo }}</td>
+    <td>{{ f.file }}</td>
+    <td>
+        {% if f.severity == "HIGH" %}
+            <span class="fail">HIGH</span>
+        {% else %}
+            <span class="pass">LOW</span>
+        {% endif %}
+    </td>
+    <td>{{ f.tool }}</td>
+    <td>{{ f.message }}</td>
+</tr>
+{% endfor %}
+
+
+<!-- ===== Findings Table ===== -->
+<div class="panel">
+    <h3>Findings in this Scan</h3>
+
+    <table>
+        <tr>
+            <th>Repository</th>
+            <th>File</th>
+            <th>Severity</th>
+            <th>Tool</th>
+            <th>Message</th>
+        </tr>
+
+        {% for f in scan.findings %}
+        <tr>
+            <td>{{ f.repo }}</td>
+            <td>{{ f.file }}</td>
+            <td>
+                {% if f.severity == "HIGH" %}
+                    <span class="fail">HIGH</span>
+                {% else %}
+                    <span class="pass">LOW</span>
+                {% endif %}
+            </td>
+            <td>{{ f.tool }}</td>
+            <td>{{ f.message }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
